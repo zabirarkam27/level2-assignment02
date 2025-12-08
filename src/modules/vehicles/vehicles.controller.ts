@@ -2,16 +2,8 @@ import { Request, Response } from "express";
 import { vehiclesService } from "./vehicles.service";
 
 const createVehicle = async (req: Request, res: Response) => {
-  const { vehicle_name, type, registration_number, daily_rent_price, availability_status } = req.body;
-
   try {
-    const result = await vehiclesService.createVehicle(
-      vehicle_name,
-      type,
-      registration_number,
-      daily_rent_price,
-      availability_status
-    );
+    const result = await vehiclesService.createVehicle(req.body);
 
     res.status(201).json({
       success: true,
@@ -61,17 +53,9 @@ const getVehicleById = async (req: Request, res: Response) => {
 
 const updateVehicle = async (req: Request, res: Response) => {
   const id = req.params.id;
-  const { vehicle_name, type, registration_number, daily_rent_price, availability_status } = req.body;
 
   try {
-    const result = await vehiclesService.updateVehicle(
-      id  as string,
-      vehicle_name,
-      type,
-      registration_number,
-      daily_rent_price,
-      availability_status
-    );
+    const result = await vehiclesService.updateVehicle(req.body);
 
     if (result.rows.length === 0) {
       return res.status(404).json({
@@ -94,7 +78,7 @@ const deleteVehicle = async (req: Request, res: Response) => {
   const id = req.params.id;
 
   try {
-    const result = await vehiclesService.deleteVehicle(id  as string);
+    const result = await vehiclesService.deleteVehicle(id as string);
 
     if (result.rowCount === 0) {
       return res.status(404).json({

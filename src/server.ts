@@ -5,16 +5,16 @@ import logger from "./middlewares/logger";
 import { userRoutes } from "./modules/users/users.routes";
 import { vehicleRoutes } from "./modules/vehicles/vehicles.routes";
 import { bookingRoutes } from "./modules/bookings/bookings.routes";
+import { authRoutes } from "./modules/auth/auth.routes";
 
 const app = express();
 const port = config.port;
 
-// Middleware
+// Parser
 app.use(express.json());
 
+// Initialize Database
 initDB()
-.then(() => console.log("Database initialized successfully"))
-.catch((err: Error) => console.error("DB Initialization error:", err));
 
 app.get("/", logger, (req: Request, res: Response) => {
   res.send("Hello Lui Eye Kan");
@@ -23,6 +23,7 @@ app.get("/", logger, (req: Request, res: Response) => {
 app.use("/users", userRoutes);
 app.use("/vehicles", vehicleRoutes);
 app.use("/bookings", bookingRoutes);
+app.use("/auth", authRoutes);
 
 
 app.use((req: Request, res: Response) => {

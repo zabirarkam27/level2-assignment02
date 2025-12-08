@@ -2,10 +2,8 @@ import { Request, Response } from "express";
 import { usersService } from "./users.service";
 
 const createUser = async (req: Request, res: Response) => {
-  const { name, email, password, phone, role } = req.body;
-
   try {
-    const result = await usersService.createUser(name, email, password, phone, role);
+    const result = await usersService.createUser(req.body);
     res.status(201).json({
       success: true,
       message: "User created successfully",
@@ -47,17 +45,8 @@ const getUserById = async (req: Request, res: Response) => {
 };
 
 const updateUser = async (req: Request, res: Response) => {
-  const { name, email, password, phone, role } = req.body;
-
   try {
-    const result = await usersService.updateUser(
-      req.params.id as string,
-      name,
-      email,
-      password,
-      phone,
-      role
-    );
+    const result = await usersService.updateUser(req.body);
 
     if (result.rows.length === 0)
       return res.status(404).json({ success: false, message: "User not found" });

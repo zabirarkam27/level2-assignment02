@@ -2,24 +2,9 @@ import { Request, Response } from "express";
 import { bookingsService } from "./bookings.service";
 
 const createBooking = async (req: Request, res: Response) => {
-  const {
-    customer_id,
-    vehicle_id,
-    rent_start_date,
-    rent_end_date,
-    total_price,
-    status,
-  } = req.body;
 
   try {
-    const result = await bookingsService.createBooking(
-      customer_id,
-      vehicle_id,
-      rent_start_date,
-      rent_end_date,
-      total_price,
-      status
-    );
+    const result = await bookingsService.createBooking(req.body);
 
     res.status(201).json({
       success: true,
@@ -67,26 +52,8 @@ const getBookingById = async (req: Request, res: Response) => {
 };
 
 const updateBooking = async (req: Request, res: Response) => {
-  const id = req.params.id;
-  const {
-    customer_id,
-    vehicle_id,
-    rent_start_date,
-    rent_end_date,
-    total_price,
-    status,
-  } = req.body;
-
   try {
-    const result = await bookingsService.updateBooking(
-      id as string,
-      customer_id,
-      vehicle_id,
-      rent_start_date,
-      rent_end_date,
-      total_price,
-      status
-    );
+    const result = await bookingsService.updateBooking(req.body);
 
     if (result.rows.length === 0)
       return res
