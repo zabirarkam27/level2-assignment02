@@ -4,8 +4,6 @@ A robust, TypeScript-based backend API for managing vehicle rentals, customer ac
 
 ## Live Deployment
 
-## Live Deployment
-
 | Component | URL |
 | :--- | :--- | 
 | **API Base URL** | [https://assignment-02-kappa-ruby.vercel.app/api/v1](https://assignment-02-kappa-ruby.vercel.app/api/v1) | 
