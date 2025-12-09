@@ -1,46 +1,70 @@
 import { pool } from "../../config/pool";
 import bcrypt from "bcryptjs";
 
+interface UserPayload {
+  name?: string;
+  email?: string;
+  password?: string;
+  phone?: string;
+  role?: "admin" | "customer";
+}
+
 // Create user
-const createUser = async (payload: Record<string, any>) => {
+const createUser = async (payload: UserPayload) => {
   const { name, email, password, phone, role } = payload;
 
-  const hashedPassword = await bcrypt.hash(password as string, 10);
+  const hashedPassword = password ? await bcrypt.hash(password, 10) : undefined;
 
-  return await pool.query(
+  const result = await pool.query(
     `INSERT INTO users (name, email, password, phone, role)
-     VALUES ($1, $2, $3, $4, $5) RETURNING *`,
-    [name, email, hashedPassword, phone, role]
+     VALUES ($1, $2, $3, $4, $5) RETURNING id, name, email, phone, role`,
+    [name, email?.toLowerCase(), hashedPassword, phone, role || "customer"]
   );
+
+  return result.rows[0];
 };
 
 // Get all users
 const getAllUsers = async () => {
-  return await pool.query(`SELECT * FROM users`);
+  const result = await pool.query(`SELECT id, name, email, phone, role FROM users`);
+  return result.rows;
 };
 
-// Get user by ID
+// Get single user
 const getUserById = async (id: string) => {
-  return await pool.query(`SELECT * FROM users WHERE id=$1`, [id]);
+  const result = await pool.query(
+    `SELECT id, name, email, phone, role FROM users WHERE id=$1`,
+    [id]
+  );
+  return result.rows[0];
 };
 
 // Update user
-const updateUser = async (payload: Record<string, any>) => {
-  const { id, name, email, password, phone, role } = payload;
+const updateUser = async (id: string, payload: UserPayload) => {
+  const { name, email, password, phone, role } = payload;
 
+  const hashedPassword = password ? await bcrypt.hash(password, 10) : undefined;
 
-
-  return await pool.query(
+  const result = await pool.query(
     `UPDATE users
-     SET name=$1, email=$2, password=$3, phone=$4, role=$5
-     WHERE id=$6 RETURNING *`,
-    [name, email, password, phone, role, id]
+     SET
+       name = COALESCE($1, name),
+       email = COALESCE($2, email),
+       password = COALESCE($3, password),
+       phone = COALESCE($4, phone),
+       role = COALESCE($5, role)
+     WHERE id=$6
+     RETURNING id, name, email, phone, role`,
+    [name, email?.toLowerCase(), hashedPassword, phone, role, id]
   );
+
+  return result.rows[0];
 };
 
 // Delete user
 const deleteUser = async (id: string) => {
-  return await pool.query(`DELETE FROM users WHERE id=$1`, [id]);
+  const result = await pool.query(`DELETE FROM users WHERE id=$1 RETURNING id`, [id]);
+  return result.rows[0];
 };
 
 export const usersService = {
