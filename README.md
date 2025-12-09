@@ -6,7 +6,7 @@ A robust, TypeScript-based backend API for managing vehicle rentals, customer ac
 
 | Component | URL |
 | :--- | :--- | 
-| **Base URL** | `[[https://assignment-02-kappa-ruby.vercel.app/](https://assignment-02-kappa-ruby.vercel.app/)]` | 
+| **Base URL** | `[https://assignment-02-kappa-ruby.vercel.app/api/v1](https://assignment-02-kappa-ruby.vercel.app/api/v1)` | 
 
 ---
 
@@ -45,18 +45,18 @@ The project is built using a modern, scalable Node.js and TypeScript stack, foll
 
 The project follows a modular, feature-based structure with clear separation between routing, controllers (handling requests/responses), and services (handling business logic and database interaction).
 
-src/
-├── config/
-│   ├── db.ts               # PostgreSQL connection and DB initialization
-│   └── pool.ts             # PostgreSQL client pool
-├── middlewares/
-│   ├── auth.middleware.ts  # JWT verification and RBAC checks
-│   └── logger.ts           # Simple request logging
-├── modules/
-│   ├── auth/               # Signup, Signin
-│   ├── bookings/           # Create, Read, Update/Cancel/Return Bookings
-│   ├── users/              # User profile management (Admin/Own)
-│   └── vehicles/           # Vehicle CRUD (Admin) & Public view
-├── types/                  # Custom TypeScript declarations (index.d.ts, booking.types.ts, etc.)
-├── app.ts                  # Express application setup and main routing
-└── server.ts               # Entry point for local execution (and Vercel export)
+* src/
+    * config/
+        * db.ts               # PostgreSQL connection and DB initialization
+        * pool.ts             # PostgreSQL client pool
+    * middlewares/
+        * auth.middleware.ts    # JWT verification and RBAC checks
+        * logger.ts           # Simple request logging
+    * modules/
+        * auth/               # Signup, Signin
+        * bookings/           # Create, Read, Update/Cancel/Return Bookings
+        * users/              # User profile management (Admin/Own)
+        * vehicles/           # Vehicle CRUD (Admin) & Public view
+    * types/                  # Custom TypeScript declarations (index.d.ts, booking.types.ts, etc.)
+    * app.ts                  # Express application setup and main routing
+    * server.ts               # Entry point for local execution (and Vercel export)
